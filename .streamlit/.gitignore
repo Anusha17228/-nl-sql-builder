@@ -1,0 +1,4 @@
+.streamlit/secrets.toml
+uploaded.db
+college.db
+__pycache__/git rm --cached .streamlit/secrets.toml
