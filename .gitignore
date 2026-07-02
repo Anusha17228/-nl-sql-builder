@@ -1,0 +1,8 @@
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+
+# Ignore local Streamlit secrets and database uploads
+.streamlit/secrets.toml
+uploaded.db
+college.db

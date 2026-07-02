@@ -1,29 +1,36 @@
-from groq import Groq
-import streamlit as st
+import os
 import re
 
-# Get API key from Streamlit secrets
-api_key = st.secrets.get("GROQ_API_KEY")
+import streamlit as st
+from groq import Groq
 
-# Debug: Check if key is loaded
-if not api_key:
-    st.error("❌ GROQ_API_KEY not found in Streamlit secrets!")
-    st.info("To fix this:")
-    st.info("1. Go to your Streamlit Cloud app")
-    st.info("2. Click ⚙️ (Settings) in the lower right")
-    st.info("3. Click 'Secrets'")
-    st.info("4. Add: GROQ_API_KEY = your_key_here")
-    st.stop()
 
-# Initialize Groq client
-try:
-    client = Groq(api_key=api_key)
-except Exception as e:
-    st.error(f"Failed to initialize Groq client: {e}")
-    st.stop()
+def get_api_key():
+    try:
+        return st.secrets.get("GROQ_API_KEY")
+    except Exception:
+        return os.getenv("GROQ_API_KEY")
+
+
+api_key = get_api_key()
+
+if api_key:
+    try:
+        client = Groq(api_key=api_key)
+    except Exception as e:
+        client = None
+        st.error(f"Failed to initialize Groq client: {e}")
+else:
+    client = None
+    st.warning(
+        "GROQ_API_KEY not set. Add it to .streamlit/secrets.toml or set the environment variable to enable AI features."
+    )
 
 
 def generate_sql(user_query, schema):
+    if client is None:
+        return "Please configure GROQ_API_KEY to enable SQL generation."
+
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
@@ -55,6 +62,9 @@ def generate_sql(user_query, schema):
 
 
 def explain_sql(sql_query):
+    if client is None:
+        return "Please configure GROQ_API_KEY to enable query explanations."
+
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
