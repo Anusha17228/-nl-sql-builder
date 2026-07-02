@@ -70,10 +70,7 @@ if uploaded_file:
 
                 st.subheader("Query Explanation")
 
-                explanation = explain_sql(
-                    sql_query,
-                    user_query
-                )
+                explanation = explain_sql(sql_query)
 
                 st.write(explanation)
 
@@ -82,14 +79,9 @@ if uploaded_file:
                 fig = create_chart(df)
 
                 if fig:
-                   st.plotly_chart(
-    fig,
-    width="stretch"
-)
+                    st.plotly_chart(fig, use_container_width=True)
                 else:
-                    st.info(
-                        "No suitable chart found."
-                    )
+                    st.info("No suitable chart found.")
 
                 st.download_button(
                     "Download CSV",
