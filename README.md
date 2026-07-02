@@ -4,7 +4,7 @@ Convert natural language questions into SQL queries using AI! Built with Streaml
 
 ## 🚀 Live Demo
 
-**[Try the app on Streamlit Cloud](https://share.streamlit.io/anusha17228/-nl-sql-builder)**
+**[Try the app on Streamlit Cloud](https://sql-query-builder.streamlit.app/)**
 
 ## ✨ Features
 
