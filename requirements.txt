@@ -3,3 +3,4 @@ groq
 pandas
 sqlparse
 plotly
+openpyxl
