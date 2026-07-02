@@ -4,7 +4,7 @@ Convert natural language questions into SQL queries using AI! Built with Streaml
 
 ## 🚀 Live Demo
 
-**[Try the app on Streamlit Cloud](https://sql-query-builder.streamlit.app/)**
+**Live app:** https://sql-query-builder.streamlit.app/
 
 ## ✨ Features
 
@@ -58,6 +58,11 @@ Convert natural language questions into SQL queries using AI! Built with Streaml
    ```bash
    streamlit run app.py
    ```
+
+6. **Open locally**
+   - Open your browser at: [http://localhost:8501](http://localhost:8501)
+   - Note: this link works only on the computer where the app is running.
+   - If the app is on a remote server, HR will need a public or forwarded URL instead of `localhost`.
 
 ## 🌐 Deployment to Streamlit Cloud
 
