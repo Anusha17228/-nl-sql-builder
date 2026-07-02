@@ -1,5 +1,6 @@
 from groq import Groq
 import streamlit as st
+import re
 
 # Get API key from Streamlit secrets
 api_key = st.secrets.get("GROQ_API_KEY")
@@ -29,7 +30,7 @@ def generate_sql(user_query, schema):
             messages=[
                 {
                     "role": "system",
-                    "content": f"You are an SQL expert. Generate a SQL query for SQLite database with the following schema:\n{schema}"
+                    "content": f"You are an SQL expert. Generate ONLY a SQL query for SQLite database. No explanations. Return ONLY the SQL code starting with SELECT.\n\nSchema:\n{schema}"
                 },
                 {
                     "role": "user",
@@ -38,7 +39,16 @@ def generate_sql(user_query, schema):
             ]
         )
         
-        return response.choices[0].message.content
+        sql_response = response.choices[0].message.content.strip()
+        
+        # Find the first SELECT statement
+        select_match = re.search(r'SELECT\s+.*?(?=;|$)', sql_response, re.IGNORECASE | re.DOTALL)
+        
+        if select_match:
+            sql_query = select_match.group(0).strip()
+            return sql_query
+        
+        return sql_response
     except Exception as e:
         st.error(f"Error generating SQL: {str(e)}")
         return None

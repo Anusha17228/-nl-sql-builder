@@ -45,58 +45,59 @@ if uploaded_file:
                 schema
             )
 
-        st.subheader("Generated SQL")
-        st.code(sql_query)
+        if sql_query:
+            st.subheader("Generated SQL")
+            st.code(sql_query)
 
-        safe, message = validate_sql(sql_query)
+            safe, message = validate_sql(sql_query)
 
-        if safe:
-            rows, columns, error = execute_query(
-                db_path,
-                sql_query
-            )
-
-            if error:
-                st.error(error)
-
+            if not safe:
+                st.error(f"⚠️ {message}")
             else:
-                df = pd.DataFrame(
-                    rows,
-                    columns=columns
+                rows, columns, error = execute_query(
+                    db_path,
+                    sql_query
                 )
 
-                st.subheader("Query Results")
-                st.dataframe(df)
-
-                st.subheader("Query Explanation")
-
-                explanation = explain_sql(sql_query)
-
-                st.write(explanation)
-
-                st.subheader("Visualization")
-
-                fig = create_chart(df)
-
-                if fig:
-                    st.plotly_chart(fig, use_container_width=True)
+                if error:
+                    st.error(error)
                 else:
-                    st.info("No suitable chart found.")
+                    df = pd.DataFrame(
+                        rows,
+                        columns=columns
+                    )
 
-                st.download_button(
-                    "Download CSV",
-                    df.to_csv(index=False),
-                    "results.csv",
-                    "text/csv"
-                )
+                    st.subheader("Query Results")
+                    st.dataframe(df)
 
-                st.session_state.history.append({
-                    "question": user_query,
-                    "sql": sql_query
-                })
+                    st.subheader("Query Explanation")
 
+                    explanation = explain_sql(sql_query)
+
+                    st.write(explanation)
+
+                    st.subheader("Visualization")
+
+                    fig = create_chart(df)
+
+                    if fig:
+                        st.plotly_chart(fig, use_container_width=True)
+                    else:
+                        st.info("No suitable chart found.")
+
+                    st.download_button(
+                        "Download CSV",
+                        df.to_csv(index=False),
+                        "results.csv",
+                        "text/csv"
+                    )
+
+                    st.session_state.history.append({
+                        "question": user_query,
+                        "sql": sql_query
+                    })
         else:
-            st.error(message)
+            st.error("Failed to generate SQL query. Check your API key in Streamlit Cloud secrets.")
 
 st.subheader("Query History")
 
