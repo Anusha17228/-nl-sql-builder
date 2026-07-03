@@ -60,7 +60,7 @@ Convert natural language questions into SQL queries using AI! Built with Streaml
    ```
 
 6. **Open locally**
-   - Open your browser at: [http://localhost:8501](http://localhost:8501)
+   - Open your browser at: http://localhost:8501
    - Note: this link works only on the computer where the app is running.
    - If the app is on a remote server, HR will need a public or forwarded URL instead of `localhost`.
 
